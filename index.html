@@ -642,66 +642,120 @@
             opacity: 0.8;
         }
 
-        /* ===== RESPONSIVO ===== */
-        @media (max-width: 1024px) {
-            .usage-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 40px;
-            }
+       /* ===== RESPONSIVO MOBILE ===== */
+@media (max-width: 480px) {
+    /* HEADER */
+    .header {
+        padding: 30px 20px;
+    }
 
-            .plans-grid {
-                grid-template-columns: 1fr;
-                gap: 60px;
-            }
+    .logo {
+        width: 120px;
+    }
 
-            .plan-card {
-                min-height: 700px;
-                padding: 80px;
-            }
+    .contact-link {
+        font-size: 10px;
+        padding-bottom: 6px;
+        letter-spacing: 2px;
+    }
 
-            .portfolio-number-top-right {
-                font-size: 12px;
-                padding: 6px 12px;
-                top: 15px;
-                right: 15px;
-            }
-        }
+    /* HERO TEXT */
+    .hero-text {
+        left: 20px;
+        bottom: 40px;
+        max-width: calc(100vw - 40px);
+    }
 
-        @media (max-width: 768px) {
-            .usage-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 30px;
-            }
+    .hero-text h1 {
+        font-size: clamp(28px, 7vw, 48px);
+        letter-spacing: -2px;
+    }
 
-            .portfolio-end-content {
-                padding: 40px;
-            }
+    .hero-small {
+        font-size: 11px;
+        margin-bottom: 15px;
+    }
 
-            .portfolio-end-message {
-                font-size: clamp(18px, 2.5vw, 32px);
-            }
+    /* SCROLL HINT */
+    .scroll-hint {
+        bottom: 40px;
+        right: 20px;
+    }
 
-            .plan-card {
-                min-height: 600px;
-                padding: 60px;
-            }
+    .scroll-text {
+        font-size: 9px;
+        margin-bottom: 8px;
+    }
 
-            .plan-card img {
-                border-radius: 8px;
-            }
+    .scroll-line {
+        width: 20px;
+    }
 
-            .plans-grid {
-                gap: 40px;
-            }
+    @keyframes scrollPulse {
+        0%, 100% { width: 20px; opacity: 1; }
+        50% { width: 35px; opacity: 0.5; }
+    }
 
-            .portfolio-number-top-right {
-                font-size: 10px;
-                padding: 4px 10px;
-                top: 10px;
-                right: 10px;
-            }
-        }
-    </style>
+    /* MANIFESTO */
+    .manifesto {
+        padding: 100px 20px;
+        min-height: auto;
+    }
+
+    .manifesto h2 {
+        font-size: clamp(28px, 6vw, 48px);
+        letter-spacing: -2px;
+        margin-bottom: 40px;
+    }
+
+    .manifesto-small {
+        font-size: 11px;
+        margin-bottom: 20px;
+    }
+
+    /* PORTFOLIO */
+    .portfolio-top {
+        padding: 100px 20px 60px;
+    }
+
+    .portfolio-top h2 {
+        font-size: clamp(28px, 6vw, 48px);
+        letter-spacing: -2px;
+    }
+
+    .portfolio-small {
+        font-size: 11px;
+    }
+
+    .portfolio-slide {
+        width: 100vw;
+        height: 60vh;
+        margin-left: -20px;
+    }
+
+    .portfolio-slide img {
+        border-radius: 0;
+    }
+
+    .portfolio-overlay {
+        padding: 20px;
+        border-radius: 0;
+    }
+
+    .portfolio-title {
+        font-size: clamp(16px, 2.5vw, 24px);
+        letter-spacing: -0.5px;
+    }
+
+    .portfolio-desc {
+        font-size: 11px;
+        letter-spacing: 0.5px;
+    }
+
+    .portfolio-number-top-right {
+        font-size: 8px;
+        padding: 4px 8px;
+ 
 </head>
 <body>
 
