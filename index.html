@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SOLAR - Prédio Comercial Histórico em Pelotas. Espaços premium para seus negócios.">
+    <title>SOLAR - Prédio Comercial Histórico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.0/index.css" />
+
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ===== RESET ===== */
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+
+        body {
+            -ms-overflow-style: none;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7a938a;
+            --dark: #0f0f0f;
+            --dark-light: #111;
+            --light: #ffffff;
+            --text: #1a1a1a;
+            --border: #ddd;
+            --bg-light: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background: var(--dark);
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ===== HEADER FIXO COM FADE ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 60px;
+            z-index: 100;
+            pointer-events: none;
+            background: transparent;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+        }
+
+        .header.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .header * {
+            pointer-events: auto;
+        }
+
+        .logo {
+            width: 200px;
+            height: auto;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-link {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: white;
+            text-decoration: none;
+            border-bottom: 2px solid white;
+            padding-bottom: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-block;
+            white-space: nowrap;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+        }
+
+        .contact-link:hover {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .contact-link:active {
+            transform: translateY(0);
+        }
+
+        /* ===== SCROLL CINEMATIZADO TOPO ===== */
+        .scroll-container {
+            height: 300vh;
+            background: var(--dark);
+            position: relative;
+            z-index: 1;
+        }
+
+        .sticky-scene {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background: var(--dark);
+        }
+
+        .scene {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .scene img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform-origin: center;
+            will-change: transform;
+            display: block;
+        }
+
+        .scene1 {
+            opacity: 1;
+        }
+
+        .scene2 {
+            opacity: 0;
+        }
+
+        /* ===== HERO TEXT ===== */
+        .hero-text {
+            position: fixed;
+            left: 80px;
+            bottom: 80px;
+            z-index: 20;
+            color: white;
+            pointer-events: none;
+            max-width: calc(100vw - 160px);
+            opacity: 0;
+            transition: none;
+        }
+
+        .hero-text.show {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .hero-small {
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(48px, 7vw, 115px);
+            line-height: 0.92;
+            font-weight: 400;
+            letter-spacing: -4px;
+            max-width: 900px;
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .highlight {
+            color: var(--primary);
+        }
+
+        /* ===== SCROLL HINT ===== */
+        .scroll-hint {
+            position: fixed;
+            bottom: 80px;
+            right: 80px;
+            z-index: 20;
+            pointer-events: none;
+            opacity: 0;
+            transition: none;
+        }
+
+        .scroll-hint.show {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-text {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 12px;
+            text-align: right;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .scroll-line {
+            width: 30px;
+            height: 1px;
+            background: white;
+            margin-left: auto;
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { width: 30px; opacity: 1; }
+            50% { width: 50px; opacity: 0.5; }
+        }
+
+        /* ===== MANIFESTO ===== */
+        .manifesto {
+            padding: 220px 60px;
+            background: #111;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .manifesto-small {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 35px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .manifesto h2 {
+            font-size: clamp(48px, 6vw, 105px);
+            line-height: 0.95;
+            font-weight: 400;
+            letter-spacing: -3px;
+            max-width: 1400px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .manifesto-content {
+            max-width: 1400px;
+        }
+
+        /* ===== PORTFOLIO HORIZONTAL ===== */
+        .portfolio {
+            background: #0c0c0c;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+
+        .portfolio-top {
+            padding: 220px 60px 120px;
+        }
+
+        .portfolio-small {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 25px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .portfolio-top h2 {
+            font-size: clamp(48px, 6vw, 105px);
+            line-height: 0.95;
+            font-weight: 400;
+            letter-spacing: -3px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .horizontal-area {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .horizontal-track {
+            display: flex;
+            gap: 28px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            padding-left: 60px;
+            height: 100%;
+            align-items: center;
+            will-change: transform;
+        }
+
+        .portfolio-slide {
+            position: relative;
+            width: 780px;
+            height: 88vh;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portfolio-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ===== NUMERAÇÃO NO CANTO DIREITO SUPERIOR ===== */
+        .portfolio-number-top-right {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+            z-index: 15;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 10;
+            color: white;
+            border-radius: 8px;
+        }
+
+        .portfolio-title {
+            font-size: clamp(20px, 2.5vw, 36px);
+            line-height: 1.1;
+            font-weight: 400;
+            letter-spacing: -1px;
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+        }
+
+        .portfolio-desc {
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.6;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+        }
+
+        /* ===== SLIDE FIM ===== */
+        .portfolio-end-slide {
+            background: linear-gradient(135deg, rgba(122, 147, 138, 0.2) 0%, rgba(122, 147, 138, 0.05) 100%);
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-end-slide::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(122, 147, 138, 0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .portfolio-end-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 60px;
+            color: white;
+        }
+
+        .portfolio-end-label {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 25px;
+            font-family: 'Montserrat', sans-serif;
+            display: block;
+        }
+
+        .portfolio-end-message {
+            font-size: clamp(24px, 3vw, 42px);
+            line-height: 1.2;
+            font-weight: 400;
+            letter-spacing: -1px;
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* ===== SERVIÇOS ===== */
+        .usage {
+            background: #fff;
+            color: var(--text);
+            padding: 220px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .usage-small {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 25px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .usage h2 {
+            font-size: clamp(48px, 6vw, 105px);
+            line-height: 0.95;
+            font-weight: 400;
+            letter-spacing: -3px;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 100px;
+        }
+
+        .usage-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 50px;
+        }
+
+        .usage-item {
+            border-top: 1px solid var(--border);
+            padding-top: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .usage-item:hover {
+            transform: translateY(-8px);
+        }
+
+        .usage-item i {
+            font-size: 42px;
+            margin-bottom: 25px;
+            display: block;
+            color: var(--primary);
+        }
+
+        .usage-item span {
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+        }
+
+        /* ===== PLANTAS FULL SIZE ===== */
+        .plans {
+            background: var(--bg-light);
+            color: var(--text);
+            padding: 220px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .plans-small {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 25px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .plans h2 {
+            font-size: clamp(48px, 6vw, 105px);
+            line-height: 0.95;
+            font-weight: 400;
+            letter-spacing: -3px;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 120px;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .plan-card {
+            background: white;
+            border-radius: 24px;
+            padding: 100px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 800px;
+        }
+
+        .plan-card:hover {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .plan-card img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+            border-radius: 12px;
+        }
+
+        /* ===== LOCALIZAÇÃO ===== */
+        .location {
+            background: white;
+            color: var(--text);
+            padding: 220px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .location-small {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 25px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .location h2 {
+            font-size: clamp(48px, 6vw, 105px);
+            line-height: 0.95;
+            font-weight: 400;
+            letter-spacing: -3px;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 100px;
+        }
+
+        .map-wrapper {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 85vh;
+            border: none;
+            display: block;
+            filter: grayscale(100%) contrast(1.05);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 120px 60px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer p {
+            font-size: 14px;
+            opacity: 0.6;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            opacity: 0.8;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 1024px) {
+            .usage-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 40px;
+            }
+
+            .plans-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .plan-card {
+                min-height: 700px;
+                padding: 80px;
+            }
+
+            .portfolio-number-top-right {
+                font-size: 12px;
+                padding: 6px 12px;
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .usage-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+
+            .portfolio-end-content {
+                padding: 40px;
+            }
+
+            .portfolio-end-message {
+                font-size: clamp(18px, 2.5vw, 32px);
+            }
+
+            .plan-card {
+                min-height: 600px;
+                padding: 60px;
+            }
+
+            .plan-card img {
+                border-radius: 8px;
+            }
+
+            .plans-grid {
+                gap: 40px;
+            }
+
+            .portfolio-number-top-right {
+                font-size: 10px;
+                padding: 4px 10px;
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER FIXO ===== -->
+<header class="header" id="header">
+    <div class="logo" id="logo">
+        <img src="assets/images/img3-logo.png" alt="Logo SOLAR" onerror="this.style.display='none'">
+    </div>
+    <div class="header-right" id="headerRight">
+        <a href="https://wa.me/5553998230003?text=Olá! Gostaria de saber mais sobre o prédio comercial SOLAR." class="contact-link" target="_blank" rel="noopener noreferrer">Contato</a>
+    </div>
+</header>
+
+<!-- ===== SCROLL CINEMATIZADO TOPO ===== -->
+<div class="scroll-container" id="scrollContainer">
+    <div class="sticky-scene">
+        <div class="scene scene1">
+            <img src="assets/images/hero-drone.jpg" alt="Vista aérea do prédio Solar">
+        </div>
+        <div class="scene scene2">
+            <img src="assets/images/hero-fachada.jpg" alt="Fachada do prédio Solar">
+        </div>
+    </div>
+</div>
+
+<!-- ===== HERO TEXT ===== -->
+<div class="hero-text" id="heroText">
+    <div class="hero-small">PRÉDIO COMERCIAL SOLAR</div>
+    <h1>Onde a <span class="highlight">história</span> encontra <br> novos negócios.</h1>
+</div>
+
+<!-- ===== SCROLL HINT ===== -->
+<div class="scroll-hint" id="scrollHint">
+    <div class="scroll-text">Role para explorar</div>
+    <div class="scroll-line"></div>
+</div>
+
+<!-- ===== MANIFESTO ===== -->
+<section class="manifesto" id="manifesto">
+    <div class="manifesto-content">
+        <div class="manifesto-small">— Essência</div>
+        <h2>O <span class="highlight">Solar</span> atravessa o tempo<br>como um espaço preparado<br>para <span class="highlight">novas histórias.</span></h2>
+    </div>
+</section>
+
+<!-- ===== PORTFOLIO HORIZONTAL ===== -->
+<section class="portfolio" id="portfolio">
+    <div class="portfolio-top">
+        <div class="portfolio-small">— Galerias de imagens</div>
+        <h2>Espaços que conectam história e experiências.</h2>
+    </div>
+    <div class="horizontal-area">
+        <div class="horizontal-track" id="scrollTrack">
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-01.jpg" alt="RECEPÇÃO">
+                <div class="portfolio-number-top-right">01/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">RECEPÇÃO</h3>
+                    <p class="portfolio-desc">entrada para 2º andar</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-02.jpg" alt="SALA DE ARQUITETURA">
+                <div class="portfolio-number-top-right">02/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">SALA DE ARQUITETURA</h3>
+                    <p class="portfolio-desc">SALA1</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-03.jpg" alt="LUSTRE ESCADAS">
+                <div class="portfolio-number-top-right">03/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">LUSTRE ESCADAS</h3>
+                    <p class="portfolio-desc">SALA ESPERA</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-04.jpg" alt="ESPAÇO CAFÉ">
+                <div class="portfolio-number-top-right">04/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">ESPAÇO CAFÉ</h3>
+                    <p class="portfolio-desc">SALA8</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-05.jpg" alt="TERRAÇO ESPAÇO CAFÉ">
+                <div class="portfolio-number-top-right">05/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">TERRAÇO ESPAÇO CAFÉ</h3>
+                    <p class="portfolio-desc">TERRAÇO 11</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-06.jpg" alt="LOJA VINHO">
+                <div class="portfolio-number-top-right">06/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">LOJA VINHO</h3>
+                    <p class="portfolio-desc">LOJA 1</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-07.jpg" alt="LOJA DE ROUPA">
+                <div class="portfolio-number-top-right">07/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">LOJA DE ROUPA</h3>
+                    <p class="portfolio-desc">LOJA 2</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-08.jpg" alt="SALA DE STUDIO TATUAGEM">
+                <div class="portfolio-number-top-right">08/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">SALA DE STUDIO TATUAGEM</h3>
+                    <p class="portfolio-desc">SALA3 E 4</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-09.jpg" alt="CIRCULAÇÃO CAMINHOS PARA O CAFÉ">
+                <div class="portfolio-number-top-right">09/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">CIRCULAÇÃO CAMINHOS PARA O CAFÉ</h3>
+                    <p class="portfolio-desc">CIRCULAÇÃO</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-10.jpg" alt="LOJA STUDIO CABELEREIRA">
+                <div class="portfolio-number-top-right">10/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">LOJA STUDIO CABELEREIRA</h3>
+                    <p class="portfolio-desc">LOJA 3</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-11.jpg" alt="LOJA STUDIO BARBEARIA">
+                <div class="portfolio-number-top-right">11/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">LOJA STUDIO BARBEARIA</h3>
+                    <p class="portfolio-desc">LOJA 4</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-12.jpg" alt="LOJA OTICA">
+                <div class="portfolio-number-top-right">12/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">LOJA OTICA</h3>
+                    <p class="portfolio-desc">LOJA 5</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-13.jpg" alt="SALA DE ESPERA 2 ANDAR">
+                <div class="portfolio-number-top-right">13/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">SALA DE ESPERA 2 ANDAR</h3>
+                    <p class="portfolio-desc">ESCADA</p>
+                </div>
+            </div>
+            <div class="portfolio-slide">
+                <img src="assets/portfolio/portfolio-14.jpg" alt="DETALHE GESSO">
+                <div class="portfolio-number-top-right">14/14</div>
+                <div class="portfolio-overlay">
+                    <h3 class="portfolio-title">DETALHE GESSO</h3>
+                    <p class="portfolio-desc">SALA 5</p>
+                </div>
+            </div>
+            <div class="portfolio-slide portfolio-end-slide">
+                <div class="portfolio-end-content">
+                    <p class="portfolio-end-label">— Fim da seleção</p>
+                    <h3 class="portfolio-end-message">Ambientes pensados para inspirar experiências, conexões e novas possibilidades...</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== SERVIÇOS ===== -->
+<section class="usage" id="services">
+    <div class="usage-small">— O que pode existir aqui</div>
+    <h2>Espaços preparados para diferentes experiências.</h2>
+    <div class="usage-grid">
+        <div class="usage-item">
+            <i class="ph ph-wine"></i>
+            <span>Wine Bar</span>
+        </div>
+        <div class="usage-item">
+            <i class="ph ph-utensils"></i>
+            <span>Restaurante/Café</span>
+        </div>
+        <div class="usage-item">
+            <i class="ph ph-scales"></i>
+            <span>Sala Advocacia</span>
+        </div>
+        <div class="usage-item">
+            <i class="ph ph-shopping-bag"></i>
+            <span>Sala Boutique</span>
+        </div>
+        <div class="usage-item">
+            <i class="ph ph-scissors"></i>
+            <span>Studio Tatuagem</span>
+        </div>
+        <div class="usage-item">
+            <i class="ph ph-laptop"></i>
+            <span>Coworking</span>
+        </div>
+        <div class="usage-item">
+            <i class="ph ph-shirt"></i>
+            <span>Lojas de Roupas</span>
+        </div>
+        <div class="usage-item">
+            <i class="ph ph-scissors"></i>
+            <span>Barbearia</span>
+        </div>
+        <div class="usage-item">
+            <i class="ph ph-door"></i>
+            <span>Banheiros</span>
+        </div>
+        <div class="usage-item">
+            <i class="ph ph-eye"></i>
+            <span>Óptica</span>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PLANTAS FULL SIZE ===== -->
+<section class="plans" id="plans">
+    <div class="plans-small">— Sobre o Solar</div>
+    <h2>Plantas pensadas para múltiplas possibilidades.</h2>
+    <div class="plans-grid">
+        <div class="plan-card">
+            <img src="assets/images/planta-01.png" alt="Planta 1 - Full Size">
+        </div>
+        <div class="plan-card">
+            <img src="assets/images/planta-02.png" alt="Planta 2 - Full Size">
+        </div>
+    </div>
+</section>
+
+<!-- ===== LOCALIZAÇÃO ===== -->
+<section class="location" id="location">
+    <div class="location-small">— Localização</div>
+    <h2>No coração histórico de Pelotas.</h2>
+    <div class="map-wrapper">
+        <iframe src="https://www.google.com/maps?q=R.+Gen.+Osório,+725+-+Centro,+Pelotas+-+RS,+96020-000&output=embed" loading="lazy" title="Localização SOLAR"></iframe>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer" id="contact">
+    <p>SOLAR — Prédio Comercial Histórico</p>
+    <p>Rua General Osório, 725 — Centro, Pelotas - RS</p>
+    <p>WhatsApp: <a href="https://wa.me/5553998230003?text=Olá! Gostaria de saber mais sobre o prédio comercial SOLAR." target="_blank" rel="noopener noreferrer">+55 53 9982-3003</a></p>
+    <p style="margin-top: 40px; font-size: 12px; opacity: 0.4;">© 2026 SOLAR. Todos os direitos reservados.</p>
+</footer>
+
+<!-- ===== SCRIPT ===== -->
+<script>
+    if (window.gsap) {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const header = document.getElementById('header');
+        const heroText = document.getElementById('heroText');
+        const scrollHint = document.getElementById('scrollHint');
+        const scrollContainer = document.getElementById('scrollContainer');
+
+        heroText.classList.add('show');
+        scrollHint.classList.add('show');
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".scroll-container",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 2,
+                markers: false,
+                onEnter: () => {
+                    heroText.classList.add('show');
+                    scrollHint.classList.add('show');
+                    header.classList.remove('hidden');
+                },
+                onEnterBack: () => {
+                    heroText.classList.add('show');
+                    scrollHint.classList.add('show');
+                    header.classList.remove('hidden');
+                },
+                onLeave: () => {
+                    heroText.classList.remove('show');
+                    scrollHint.classList.remove('show');
+                    header.classList.add('hidden');
+                },
+                onLeaveBack: () => {
+                    heroText.classList.remove('show');
+                    scrollHint.classList.remove('show');
+                    header.classList.remove('hidden');
+                }
+            }
+        });
+
+        tl.to(".scene1 img", {
+            scale: 2.3,
+            y: 120,
+            ease: "power2.out"
+        }, 0);
+
+        tl.to(".scene1 img", {
+            opacity: 0,
+            ease: "power2.inOut",
+            duration: 0.2
+        }, 0.3);
+
+        tl.to(".scene2", {
+            opacity: 1,
+            ease: "power2.inOut",
+            duration: 0.2
+        }, 0.3);
+
+        tl.to(".scene2 img", {
+            scale: 1.6,
+            x: -60,
+            y: 80,
+            ease: "power2.out"
+        }, 0.3);
+
+        const track = document.querySelector(".horizontal-track");
+        if (track) {
+            gsap.to(track, {
+                x: () => -(track.scrollWidth - window.innerWidth),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".horizontal-area",
+                    start: "top top",
+                    end: () => `+=${track.scrollWidth}`,
+                    scrub: 1,
+                    pin: true,
+                    invalidateOnRefresh: true
+                }
+            });
+        }
+
+        window.addEventListener('resize', () => {
+            ScrollTrigger.refresh();
+        });
+    }
+</script>
+
+</body>
+</html>
